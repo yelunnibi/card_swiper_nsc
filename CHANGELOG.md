@@ -19,6 +19,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [3.0.0] - 2023-07-09
+
+### Fixed
+
+- [PR#59](https://github.com/TheAnkurPanchani/card_swiper/pull/59): hide items at the end of swiper if it's not looping
+- [PR#69](https://github.com/TheAnkurPanchani/card_swiper/pull/69): Fix STACK and TINDER auto wheel casting direction issues
+- [Issue#34](https://github.com/TheAnkurPanchani/card_swiper/issues/34): SwiperLayout.CUSTOM layout is not working as expected
+- [Issue#52](https://github.com/TheAnkurPanchani/card_swiper/issues/52): loop is not working
+- [Issue#62](https://github.com/TheAnkurPanchani/card_swiper/issues/62): Can I remove fake cards?
+
 ## [2.0.4] - 2022-06-05
 
 ### Fixed
