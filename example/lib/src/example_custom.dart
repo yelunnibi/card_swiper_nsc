@@ -55,12 +55,21 @@ class _ExampleCustomState extends State<ExampleCustom> {
 
   Widget _buildItem(BuildContext context, int index) {
     return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(_radius)),
-      child: Image.asset(
-        images[index % images.length],
-        fit: BoxFit.fill,
-      ),
-    );
+        borderRadius: BorderRadius.all(Radius.circular(_radius)),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              images[index % images.length],
+              fit: BoxFit.fill,
+            ),
+            Text(
+              index.toString(),
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 25),
+            )
+          ],
+        ));
   }
 
   @override

@@ -102,7 +102,9 @@ abstract class _CustomLayoutStateBase<T extends _SubSwiper> extends State<T>
 
     for (var i = 0; i < _animationCount! && widget.itemCount > 0; ++i) {
       final itemIndex = _currentIndex + i + _startIndex;
-      if (!widget.loop && itemIndex >= widget.itemCount) continue;
+      if (!widget.loop && (itemIndex >= widget.itemCount || itemIndex < 0)) {
+        continue;
+      }
 
       var realIndex = itemIndex % widget.itemCount;
       if (realIndex < 0) {
@@ -196,12 +198,12 @@ abstract class _CustomLayoutStateBase<T extends _SubSwiper> extends State<T>
         loop: widget.loop,
         reverse: false,
       );
+      if (_currentIndex == newIndex) return;
       _move(event.targetPosition, nextIndex: newIndex);
     } else if (event is MoveIndexControllerEvent) {
-      _move(
-        event.targetPosition,
-        nextIndex: _getProperNewIndex(event.newIndex),
-      );
+      final newIndex = _getProperNewIndex(event.newIndex);
+      if (_currentIndex == newIndex) return;
+      _move(event.targetPosition, nextIndex: newIndex);
     }
   }
 
@@ -214,11 +216,13 @@ abstract class _CustomLayoutStateBase<T extends _SubSwiper> extends State<T>
 
     if (_animationController.value >= 0.75 || velocity > 500.0) {
       if (_currentIndex <= 0 && !widget.loop) {
+        _move(0.5);
         return;
       }
       _move(1.0, nextIndex: _currentIndex - 1);
     } else if (_animationController.value < 0.25 || velocity < -500.0) {
       if (_currentIndex >= widget.itemCount - 1 && !widget.loop) {
+        _move(0.5);
         return;
       }
       _move(0.0, nextIndex: _currentIndex + 1);
@@ -246,6 +250,9 @@ abstract class _CustomLayoutStateBase<T extends _SubSwiper> extends State<T>
             2;
     // no loop ?
     if (!widget.loop) {
+      if (widget.itemCount == 1) {
+        value = 0.5;
+      }
       if (_currentIndex >= widget.itemCount - 1) {
         if (value < 0.5) {
           value = 0.5;
