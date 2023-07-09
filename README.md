@@ -73,7 +73,7 @@ We are using this project [transformer_page_view](https://github.com/best-flutte
 Add
 
 ```bash
-card_swiper : ^2.0.1
+card_swiper : ^3.0.0
 ```
 
 to your `pubspec.yaml`, and run
