@@ -4,6 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class IndexControllerEventBase {
+  IndexControllerEventBase({
+    required this.animation,
+  });
+
   final bool animation;
 
   final completer = Completer<void>();
@@ -13,10 +17,6 @@ abstract class IndexControllerEventBase {
       completer.complete();
     }
   }
-
-  IndexControllerEventBase({
-    required this.animation,
-  });
 }
 
 mixin TargetedPositionControllerEvent on IndexControllerEventBase {
@@ -79,8 +79,6 @@ class PrevIndexControllerEvent extends IndexControllerEventBase
 
 class MoveIndexControllerEvent extends IndexControllerEventBase
     with TargetedPositionControllerEvent {
-  final int newIndex;
-  final int oldIndex;
   MoveIndexControllerEvent({
     required this.newIndex,
     required this.oldIndex,
@@ -88,6 +86,8 @@ class MoveIndexControllerEvent extends IndexControllerEventBase
   }) : super(
           animation: animation,
         );
+  final int newIndex;
+  final int oldIndex;
   @override
   double get targetPosition => newIndex > oldIndex ? 1 : 0;
 }
@@ -95,7 +95,7 @@ class MoveIndexControllerEvent extends IndexControllerEventBase
 class IndexController extends ChangeNotifier {
   IndexControllerEventBase? event;
   int index = 0;
-  Future move(int index, {bool animation = true}) {
+  Future<void> move(int index, {bool animation = true}) {
     final e = event = MoveIndexControllerEvent(
       animation: animation,
       newIndex: index,
@@ -105,13 +105,13 @@ class IndexController extends ChangeNotifier {
     return e.future;
   }
 
-  Future next({bool animation = true}) {
+  Future<void> next({bool animation = true}) {
     final e = event = NextIndexControllerEvent(animation: animation);
     notifyListeners();
     return e.future;
   }
 
-  Future previous({bool animation = true}) {
+  Future<void> previous({bool animation = true}) {
     final e = event = PrevIndexControllerEvent(animation: animation);
     notifyListeners();
     return e.future;

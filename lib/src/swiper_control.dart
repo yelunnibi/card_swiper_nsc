@@ -2,10 +2,20 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 
 class SwiperControl extends SwiperPlugin {
+  const SwiperControl({
+    this.iconPrevious = Icons.arrow_back_ios,
+    this.iconNext = Icons.arrow_forward_ios,
+    this.color,
+    this.disableColor,
+    this.key,
+    this.size = 30.0,
+    this.padding = const EdgeInsets.all(5.0),
+  });
+
   ///IconData for previous
   final IconData iconPrevious;
 
-  ///iconData fopr next
+  ///iconData for next
   final IconData iconNext;
 
   ///icon size
@@ -22,30 +32,20 @@ class SwiperControl extends SwiperPlugin {
 
   final Key? key;
 
-  const SwiperControl({
-    this.iconPrevious = Icons.arrow_back_ios,
-    this.iconNext = Icons.arrow_forward_ios,
-    this.color,
-    this.disableColor,
-    this.key,
-    this.size = 30.0,
-    this.padding = const EdgeInsets.all(5.0),
-  });
-
   Widget buildButton({
     required SwiperPluginConfig? config,
     required Color color,
-    required IconData iconDaga,
+    required IconData iconData,
     required int quarterTurns,
     required bool previous,
   }) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: () {
+      onTap: () async {
         if (previous) {
-          config!.controller.previous(animation: true);
+          await config!.controller.previous(animation: true);
         } else {
-          config!.controller.next(animation: true);
+          await config!.controller.next(animation: true);
         }
       },
       child: Padding(
@@ -53,7 +53,7 @@ class SwiperControl extends SwiperPlugin {
           child: RotatedBox(
               quarterTurns: quarterTurns,
               child: Icon(
-                iconDaga,
+                iconData,
                 semanticLabel: previous ? 'Previous' : 'Next',
                 size: size,
                 color: color,
@@ -88,14 +88,14 @@ class SwiperControl extends SwiperPlugin {
           buildButton(
             config: config,
             color: prevColor,
-            iconDaga: iconPrevious,
+            iconData: iconPrevious,
             quarterTurns: 0,
             previous: true,
           ),
           buildButton(
             config: config,
             color: nextColor,
-            iconDaga: iconNext,
+            iconData: iconNext,
             quarterTurns: 0,
             previous: false,
           )
@@ -109,14 +109,14 @@ class SwiperControl extends SwiperPlugin {
           buildButton(
             config: config,
             color: prevColor,
-            iconDaga: iconPrevious,
+            iconData: iconPrevious,
             quarterTurns: -3,
             previous: true,
           ),
           buildButton(
             config: config,
             color: nextColor,
-            iconDaga: iconNext,
+            iconData: iconNext,
             quarterTurns: -3,
             previous: false,
           )
@@ -124,9 +124,7 @@ class SwiperControl extends SwiperPlugin {
       );
     }
 
-    return SizedBox(
-      height: double.infinity,
-      width: double.infinity,
+    return SizedBox.expand(
       child: child,
     );
   }

@@ -1,4 +1,7 @@
+/// transformer page view library
 library transformer_page_view;
+
+import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 
@@ -20,6 +23,19 @@ const int kMiddleValue = 1000000000;
 const int kDefaultTransactionDuration = 300;
 
 class TransformInfo {
+  TransformInfo({
+    this.index,
+    this.position,
+    this.width,
+    this.height,
+    this.activeIndex,
+    required this.fromIndex,
+    this.forward,
+    this.done,
+    this.viewportFraction,
+    this.scrollDirection,
+  });
+
   /// The `width` of the `TransformerPageView`
   final double? width;
 
@@ -29,8 +45,8 @@ class TransformInfo {
   /// The `position` of the widget pass to [PageTransformer.transform]
   ///  A `position` describes how visible the widget is.
   ///  The widget in the center of the screen' which is  full visible, position is 0.0.
-  ///  The widge in the left ,may be hidden, of the screen's position is less than 0.0, -1.0 when out of the screen.
-  ///  The widge in the right ,may be hidden, of the screen's position is greater than 0.0,  1.0 when out of the screen
+  ///  The widget in the left ,may be hidden, of the screen's position is less than 0.0, -1.0 when out of the screen.
+  ///  The widget in the right ,may be hidden, of the screen's position is greater than 0.0,  1.0 when out of the screen
   ///
   ///
   final double? position;
@@ -56,26 +72,13 @@ class TransformInfo {
 
   /// Copy from [TransformerPageView.scrollDirection]
   final Axis? scrollDirection;
-
-  TransformInfo({
-    this.index,
-    this.position,
-    this.width,
-    this.height,
-    this.activeIndex,
-    required this.fromIndex,
-    this.forward,
-    this.done,
-    this.viewportFraction,
-    this.scrollDirection,
-  });
 }
 
 abstract class PageTransformer {
+  PageTransformer({this.reverse = false});
+
   ///
   final bool reverse;
-
-  PageTransformer({this.reverse = false});
 
   /// Return a transformed widget, based on child and TransformInfo
   Widget transform(Widget child, TransformInfo info);
@@ -87,10 +90,10 @@ typedef PageTransformerBuilderCallback = Widget Function(
 );
 
 class PageTransformerBuilder extends PageTransformer {
-  final PageTransformerBuilderCallback builder;
-
   PageTransformerBuilder({bool reverse = false, required this.builder})
       : super(reverse: reverse);
+
+  final PageTransformerBuilderCallback builder;
 
   @override
   Widget transform(Widget child, TransformInfo info) {
@@ -99,10 +102,6 @@ class PageTransformerBuilder extends PageTransformer {
 }
 
 class TransformerPageController extends PageController {
-  final bool loop;
-  final int itemCount;
-  final bool reverse;
-
   TransformerPageController({
     int initialPage = 0,
     bool keepPage = true,
@@ -115,6 +114,10 @@ class TransformerPageController extends PageController {
                 initialPage, loop, itemCount, reverse),
             keepPage: keepPage,
             viewportFraction: viewportFraction);
+
+  final bool loop;
+  final int itemCount;
+  final bool reverse;
 
   int getRenderIndexFromRealIndex(num index) {
     return _getRenderIndexFromRealIndex(index, loop, itemCount, reverse);
@@ -196,54 +199,6 @@ class TransformerPageController extends PageController {
 }
 
 class TransformerPageView extends StatefulWidget {
-  /// Create a `transformed` widget base on the widget that has been passed to  the [PageTransformer.transform].
-  /// See [TransformInfo]
-  ///
-  final PageTransformer? transformer;
-
-  /// Same as [PageView.scrollDirection]
-  ///
-  /// Defaults to [Axis.horizontal].
-  final Axis scrollDirection;
-
-  /// Same as [PageView.physics]
-  final ScrollPhysics? physics;
-
-  /// Set to false to disable page snapping, useful for custom scroll behavior.
-  /// Same as [PageView.pageSnapping]
-  final bool pageSnapping;
-
-  /// Called whenever the page in the center of the viewport changes.
-  /// Same as [PageView.onPageChanged]
-  final ValueChanged<int>? onPageChanged;
-
-  final IndexedWidgetBuilder? itemBuilder;
-
-  // See [IndexController.mode],[IndexController.next],[IndexController.previous]
-  final IndexController? controller;
-
-  /// Animation duration
-  final Duration duration;
-
-  /// Animation curve
-  final Curve curve;
-
-  final TransformerPageController? pageController;
-
-  /// Set true to open infinity loop mode.
-  final bool loop;
-
-  /// This value is only valid when `pageController` is not set,
-  final int itemCount;
-
-  /// This value is only valid when `pageController` is not set,
-  final double viewportFraction;
-
-  /// If not set, it is controlled by this widget.
-  final int? index;
-
-  final bool allowImplicitScrolling;
-
   /// Creates a scrollable list that works page by page using widgets that are
   /// created on demand.
   ///
@@ -316,6 +271,54 @@ class TransformerPageView extends StatefulWidget {
       controller: controller,
     );
   }
+
+  /// Create a `transformed` widget base on the widget that has been passed to  the [PageTransformer.transform].
+  /// See [TransformInfo]
+  ///
+  final PageTransformer? transformer;
+
+  /// Same as [PageView.scrollDirection]
+  ///
+  /// Defaults to [Axis.horizontal].
+  final Axis scrollDirection;
+
+  /// Same as [PageView.physics]
+  final ScrollPhysics? physics;
+
+  /// Set to false to disable page snapping, useful for custom scroll behavior.
+  /// Same as [PageView.pageSnapping]
+  final bool pageSnapping;
+
+  /// Called whenever the page in the center of the viewport changes.
+  /// Same as [PageView.onPageChanged]
+  final ValueChanged<int>? onPageChanged;
+
+  final IndexedWidgetBuilder? itemBuilder;
+
+  // See [IndexController.mode],[IndexController.next],[IndexController.previous]
+  final IndexController? controller;
+
+  /// Animation duration
+  final Duration duration;
+
+  /// Animation curve
+  final Curve curve;
+
+  final TransformerPageController? pageController;
+
+  /// Set true to open infinity loop mode.
+  final bool loop;
+
+  /// This value is only valid when `pageController` is not set,
+  final int itemCount;
+
+  /// This value is only valid when `pageController` is not set,
+  final double viewportFraction;
+
+  /// If not set, it is controlled by this widget.
+  final int? index;
+
+  final bool allowImplicitScrolling;
 
   @override
   State<StatefulWidget> createState() => _TransformerPageViewState();
@@ -528,11 +531,11 @@ class _TransformerPageViewState extends State<TransformerPageView> {
       if (!created) {
         final initPage = _pageController.getRealIndexFromRenderIndex(index);
         if (_pageController.hasClients) {
-          _pageController.animateToPage(
+          unawaited(_pageController.animateToPage(
             initPage,
             duration: widget.duration,
             curve: widget.curve,
-          );
+          ));
         }
       }
     }
@@ -556,7 +559,7 @@ class _TransformerPageViewState extends State<TransformerPageView> {
     super.didChangeDependencies();
   }
 
-  void onChangeNotifier() {
+  Future<void> onChangeNotifier() async {
     final controller = widget.controller!;
     final event = controller.event;
     int index;
@@ -576,7 +579,7 @@ class _TransformerPageViewState extends State<TransformerPageView> {
     }
     if (_pageController.hasClients) {
       if (event.animation) {
-        _pageController
+        await _pageController
             .animateToPage(
               index,
               duration: widget.duration,

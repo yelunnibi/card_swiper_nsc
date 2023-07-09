@@ -1,5 +1,5 @@
 // ignore_for_file: constant_identifier_names
-
+/// page indicator library
 library flutter_page_indicator;
 
 import 'package:flutter/material.dart';
@@ -166,6 +166,8 @@ class ColorPainter extends BasePainter {
 }
 
 abstract class BasePainter extends CustomPainter {
+  BasePainter(this.widget, this.page, this.index, this._paint);
+
   final PageIndicator widget;
   final double page;
   final int index;
@@ -174,8 +176,6 @@ abstract class BasePainter extends CustomPainter {
   double lerp(double begin, double end, double progress) {
     return begin + (end - begin) * progress;
   }
-
-  BasePainter(this.widget, this.page, this.index, this._paint);
 
   void draw(Canvas canvas, double space, double size, double radius);
 
@@ -307,6 +307,20 @@ enum PageIndicatorLayout {
 }
 
 class PageIndicator extends StatefulWidget {
+  const PageIndicator({
+    Key? key,
+    this.size = 20.0,
+    this.space = 5.0,
+    required this.count,
+    this.activeSize = 20.0,
+    required this.controller,
+    this.color = Colors.white30,
+    this.layout = PageIndicatorLayout.SLIDE,
+    this.activeColor = Colors.white,
+    this.scale = 0.6,
+    this.dropHeight = 20.0,
+  }) : super(key: key);
+
   /// size of the dots
   final double size;
 
@@ -334,20 +348,6 @@ class PageIndicator extends StatefulWidget {
   final PageController controller;
 
   final double activeSize;
-
-  const PageIndicator({
-    Key? key,
-    this.size = 20.0,
-    this.space = 5.0,
-    required this.count,
-    this.activeSize = 20.0,
-    required this.controller,
-    this.color = Colors.white30,
-    this.layout = PageIndicatorLayout.SLIDE,
-    this.activeColor = Colors.white,
-    this.scale = 0.6,
-    this.dropHeight = 20.0,
-  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {

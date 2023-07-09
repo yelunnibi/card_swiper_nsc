@@ -5,6 +5,14 @@ import 'package:flutter/material.dart';
 import '../card_swiper.dart';
 
 class FractionPaginationBuilder extends SwiperPlugin {
+  const FractionPaginationBuilder({
+    this.color,
+    this.fontSize = 20.0,
+    this.key,
+    this.activeColor,
+    this.activeFontSize = 35.0,
+  });
+
   ///color ,if set null , will be Theme.of(context).scaffoldBackgroundColor
   final Color? color;
 
@@ -18,14 +26,6 @@ class FractionPaginationBuilder extends SwiperPlugin {
   final double activeFontSize;
 
   final Key? key;
-
-  const FractionPaginationBuilder({
-    this.color,
-    this.fontSize = 20.0,
-    this.key,
-    this.activeColor,
-    this.activeFontSize = 35.0,
-  });
 
   @override
   Widget build(BuildContext context, SwiperPluginConfig? config) {
@@ -72,6 +72,15 @@ class FractionPaginationBuilder extends SwiperPlugin {
 }
 
 class RectSwiperPaginationBuilder extends SwiperPlugin {
+  const RectSwiperPaginationBuilder({
+    this.activeColor,
+    this.color,
+    this.key,
+    this.size = const Size(10.0, 2.0),
+    this.activeSize = const Size(10.0, 2.0),
+    this.space = 3.0,
+  });
+
   ///color when current index,if set null , will be Theme.of(context).primaryColor
   final Color? activeColor;
 
@@ -88,15 +97,6 @@ class RectSwiperPaginationBuilder extends SwiperPlugin {
   final double space;
 
   final Key? key;
-
-  const RectSwiperPaginationBuilder({
-    this.activeColor,
-    this.color,
-    this.key,
-    this.size = const Size(10.0, 2.0),
-    this.activeSize = const Size(10.0, 2.0),
-    this.space = 3.0,
-  });
 
   @override
   Widget build(BuildContext context, SwiperPluginConfig config) {
@@ -146,6 +146,15 @@ class RectSwiperPaginationBuilder extends SwiperPlugin {
 }
 
 class DotSwiperPaginationBuilder extends SwiperPlugin {
+  const DotSwiperPaginationBuilder({
+    this.activeColor,
+    this.color,
+    this.key,
+    this.size = 10.0,
+    this.activeSize = 10.0,
+    this.space = 3.0,
+  });
+
   ///color when current index,if set null , will be Theme.of(context).primaryColor
   final Color? activeColor;
 
@@ -162,15 +171,6 @@ class DotSwiperPaginationBuilder extends SwiperPlugin {
   final double space;
 
   final Key? key;
-
-  const DotSwiperPaginationBuilder({
-    this.activeColor,
-    this.color,
-    this.key,
-    this.size = 10.0,
-    this.activeSize = 10.0,
-    this.space = 3.0,
-  });
 
   @override
   Widget build(BuildContext context, SwiperPluginConfig config) {
@@ -244,9 +244,9 @@ typedef SwiperPaginationBuilder = Widget Function(
 );
 
 class SwiperCustomPagination extends SwiperPlugin {
-  final SwiperPaginationBuilder builder;
-
   const SwiperCustomPagination({required this.builder});
+
+  final SwiperPaginationBuilder builder;
 
   @override
   Widget build(BuildContext context, SwiperPluginConfig config) {
@@ -255,6 +255,13 @@ class SwiperCustomPagination extends SwiperPlugin {
 }
 
 class SwiperPagination extends SwiperPlugin {
+  const SwiperPagination({
+    this.alignment,
+    this.key,
+    this.margin = const EdgeInsets.all(10.0),
+    this.builder = SwiperPagination.dots,
+  });
+
   /// dot style pagination
   static const SwiperPlugin dots = DotSwiperPaginationBuilder();
 
@@ -274,13 +281,6 @@ class SwiperPagination extends SwiperPlugin {
   final SwiperPlugin builder;
 
   final Key? key;
-
-  const SwiperPagination({
-    this.alignment,
-    this.key,
-    this.margin = const EdgeInsets.all(10.0),
-    this.builder = SwiperPagination.dots,
-  });
 
   @override
   Widget build(BuildContext context, SwiperPluginConfig config) {

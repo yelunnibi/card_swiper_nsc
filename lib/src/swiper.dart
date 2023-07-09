@@ -35,98 +35,6 @@ enum SwiperLayout {
 }
 
 class Swiper extends StatefulWidget {
-  /// If set true , the pagination will display 'outer' of the 'content' container.
-  final bool outer;
-
-  /// Inner item height, this property is valid if layout=STACK or layout=TINDER or LAYOUT=CUSTOM,
-  final double? itemHeight;
-
-  /// Inner item width, this property is valid if layout=STACK or layout=TINDER or LAYOUT=CUSTOM,
-  final double? itemWidth;
-
-  // height of the inside container,this property is valid when outer=true,otherwise the inside container size is controlled by parent widget
-  final double? containerHeight;
-
-  // width of the inside container,this property is valid when outer=true,otherwise the inside container size is controlled by parent widget
-  final double? containerWidth;
-
-  /// Build item on index
-  final IndexedWidgetBuilder? itemBuilder;
-
-  /// Support transform like Android PageView did
-  /// `itemBuilder` and `transformItemBuilder` must have one not null
-  final PageTransformer? transformer;
-
-  /// count of the display items
-  final int itemCount;
-
-  final ValueChanged<int>? onIndexChanged;
-
-  ///auto play config
-  final bool autoplay;
-
-  ///Duration of the animation between transactions (in millisecond).
-  final int autoplayDelay;
-
-  ///disable auto play when interaction
-  final bool autoplayDisableOnInteraction;
-
-  ///auto play transition duration (in millisecond)
-  final int duration;
-
-  ///horizontal/vertical
-  final Axis scrollDirection;
-
-  ///left/right for Stack Layout
-  final AxisDirection axisDirection;
-
-  ///transition curve
-  final Curve curve;
-
-  /// Set to false to disable continuous loop mode.
-  final bool loop;
-
-  ///Index number of initial slide.
-  ///If not set , the `Swiper` is 'uncontrolled', which means manage index by itself
-  ///If set , the `Swiper` is 'controlled', which means the index is fully managed by parent widget.
-  final int? index;
-
-  ///Called when tap
-  final SwiperOnTap? onTap;
-
-  ///The swiper pagination plugin
-  final SwiperPlugin? pagination;
-
-  ///the swiper control button plugin
-  final SwiperPlugin? control;
-
-  ///other plugins, you can custom your own plugin
-  final List<SwiperPlugin>? plugins;
-
-  ///
-  final SwiperController? controller;
-
-  final ScrollPhysics? physics;
-
-  ///
-  final double viewportFraction;
-
-  /// Build in layouts
-  final SwiperLayout layout;
-
-  /// this value is valid when layout == SwiperLayout.CUSTOM
-  final CustomLayoutOption? customLayoutOption;
-
-  // This value is valid when viewportFraction is set and < 1.0
-  final double? scale;
-
-  // This value is valid when viewportFraction is set and < 1.0
-  final double? fade;
-
-  final PageIndicatorLayout indicatorLayout;
-
-  final bool allowImplicitScrolling;
-
   const Swiper({
     this.itemBuilder,
     this.indicatorLayout = PageIndicatorLayout.NONE,
@@ -246,6 +154,98 @@ class Swiper extends StatefulWidget {
         },
         itemCount: children.length,
       );
+
+  /// If set true , the pagination will display 'outer' of the 'content' container.
+  final bool outer;
+
+  /// Inner item height, this property is valid if layout=STACK or layout=TINDER or LAYOUT=CUSTOM,
+  final double? itemHeight;
+
+  /// Inner item width, this property is valid if layout=STACK or layout=TINDER or LAYOUT=CUSTOM,
+  final double? itemWidth;
+
+  // height of the inside container,this property is valid when outer=true,otherwise the inside container size is controlled by parent widget
+  final double? containerHeight;
+
+  // width of the inside container,this property is valid when outer=true,otherwise the inside container size is controlled by parent widget
+  final double? containerWidth;
+
+  /// Build item on index
+  final IndexedWidgetBuilder? itemBuilder;
+
+  /// Support transform like Android PageView did
+  /// `itemBuilder` and `transformItemBuilder` must have one not null
+  final PageTransformer? transformer;
+
+  /// count of the display items
+  final int itemCount;
+
+  final ValueChanged<int>? onIndexChanged;
+
+  ///auto play config
+  final bool autoplay;
+
+  ///Duration of the animation between transactions (in millisecond).
+  final int autoplayDelay;
+
+  ///disable auto play when interaction
+  final bool autoplayDisableOnInteraction;
+
+  ///auto play transition duration (in millisecond)
+  final int duration;
+
+  ///horizontal/vertical
+  final Axis scrollDirection;
+
+  ///left/right for Stack Layout
+  final AxisDirection axisDirection;
+
+  ///transition curve
+  final Curve curve;
+
+  /// Set to false to disable continuous loop mode.
+  final bool loop;
+
+  ///Index number of initial slide.
+  ///If not set , the `Swiper` is 'uncontrolled', which means manage index by itself
+  ///If set , the `Swiper` is 'controlled', which means the index is fully managed by parent widget.
+  final int? index;
+
+  ///Called when tap
+  final SwiperOnTap? onTap;
+
+  ///The swiper pagination plugin
+  final SwiperPlugin? pagination;
+
+  ///the swiper control button plugin
+  final SwiperPlugin? control;
+
+  ///other plugins, you can custom your own plugin
+  final List<SwiperPlugin>? plugins;
+
+  ///
+  final SwiperController? controller;
+
+  final ScrollPhysics? physics;
+
+  ///
+  final double viewportFraction;
+
+  /// Build in layouts
+  final SwiperLayout layout;
+
+  /// this value is valid when layout == SwiperLayout.CUSTOM
+  final CustomLayoutOption? customLayoutOption;
+
+  // This value is valid when viewportFraction is set and < 1.0
+  final double? scale;
+
+  // This value is valid when viewportFraction is set and < 1.0
+  final double? fade;
+
+  final PageIndicatorLayout indicatorLayout;
+
+  final bool allowImplicitScrolling;
 
   static Swiper list<T>({
     PageTransformer? transformer,
@@ -387,8 +387,8 @@ abstract class _SwiperTimerMixin extends State<Swiper> {
     );
   }
 
-  void _onTimer(Timer timer) {
-    _controller.next(animation: true);
+  Future<void> _onTimer(Timer timer) async {
+    return _controller.next(animation: true);
   }
 
   void _stopAutoplay() {
@@ -684,19 +684,6 @@ class _SwiperState extends _SwiperTimerMixin {
 }
 
 abstract class _SubSwiper extends StatefulWidget {
-  final IndexedWidgetBuilder? itemBuilder;
-  final int itemCount;
-  final int? index;
-  final ValueChanged<int>? onIndexChanged;
-  final SwiperController controller;
-  final int? duration;
-  final Curve curve;
-  final double? itemWidth;
-  final double? itemHeight;
-  final bool loop;
-  final Axis? scrollDirection;
-  final AxisDirection? axisDirection;
-
   const _SubSwiper({
     Key? key,
     required this.loop,
@@ -712,6 +699,19 @@ abstract class _SubSwiper extends StatefulWidget {
     this.axisDirection = AxisDirection.left,
     this.onIndexChanged,
   }) : super(key: key);
+
+  final IndexedWidgetBuilder? itemBuilder;
+  final int itemCount;
+  final int? index;
+  final ValueChanged<int>? onIndexChanged;
+  final SwiperController controller;
+  final int? duration;
+  final Curve curve;
+  final double? itemWidth;
+  final double? itemHeight;
+  final bool loop;
+  final Axis? scrollDirection;
+  final AxisDirection? axisDirection;
 
   @override
   State<StatefulWidget> createState();
@@ -808,11 +808,6 @@ class _TinderState extends _CustomLayoutStateBase<_TinderSwiper> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   void didUpdateWidget(_TinderSwiper oldWidget) {
     _updateValues();
     super.didUpdateWidget(oldWidget);
@@ -894,11 +889,6 @@ class _StackViewState extends _CustomLayoutStateBase<_StackSwiper> {
   late List<double> offsets;
   late List<double> opacity;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
   void _updateValues() {
     if (widget.scrollDirection == Axis.horizontal) {
       final space = (_swiperWidth - widget.itemWidth!) / 2;
@@ -973,12 +963,12 @@ class _StackViewState extends _CustomLayoutStateBase<_StackSwiper> {
 }
 
 class ScaleAndFadeTransformer extends PageTransformer {
-  final double? _scale;
-  final double? _fade;
-
   ScaleAndFadeTransformer({double? fade = 0.3, double? scale = 0.8})
       : _fade = fade,
         _scale = scale;
+
+  final double? _scale;
+  final double? _fade;
 
   @override
   Widget transform(Widget child, TransformInfo info) {

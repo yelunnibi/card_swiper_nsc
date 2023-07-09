@@ -11,7 +11,7 @@ void main() {
           itemWidth: 300.0,
           itemHeight: 200.0,
           itemBuilder: (context, index) {
-            return Container(
+            return ColoredBox(
               color: Colors.grey,
               child: Center(
                 child: Text('$index'),
@@ -32,7 +32,7 @@ void main() {
           itemWidth: 300.0,
           itemHeight: 200.0,
           itemBuilder: (context, index) {
-            return Container(
+            return ColoredBox(
               color: Colors.grey,
               child: Center(
                 child: Text('$index'),
@@ -53,7 +53,7 @@ void main() {
           viewportFraction: 0.8,
           scale: 0.9,
           itemBuilder: (context, index) {
-            return Container(
+            return ColoredBox(
               color: Colors.grey,
               child: Center(
                 child: Text('$index'),
@@ -85,7 +85,7 @@ void main() {
           itemHeight: 200.0,
           customLayoutOption: customLayoutOption,
           itemBuilder: (context, index) {
-            return Container(
+            return ColoredBox(
               color: Colors.grey,
               child: Center(
                 child: Text('$index'),

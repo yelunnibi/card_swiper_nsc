@@ -1,14 +1,15 @@
 import 'package:flutter/widgets.dart';
+
 import 'transformer_page_view.dart';
 
-typedef PaintCallback = Function(Canvas canvas, Size size);
+// typedef PaintCallback = Function(Canvas canvas, Size size);
 
 class ColorPainter extends CustomPainter {
+  ColorPainter(this._paint, this.info, this.colors);
+
   final Paint _paint;
   final TransformInfo info;
   final List<Color> colors;
-
-  ColorPainter(this._paint, this.info, this.colors);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -80,18 +81,18 @@ class _ParallaxColorState extends State<ParallaxColor> {
 }
 
 class ParallaxColor extends StatefulWidget {
-  final Widget child;
-
-  final List<Color> colors;
-
-  final TransformInfo info;
-
   const ParallaxColor({
     Key? key,
     required this.child,
     required this.colors,
     required this.info,
   }) : super(key: key);
+
+  final Widget child;
+
+  final List<Color> colors;
+
+  final TransformInfo info;
 
   @override
   State<StatefulWidget> createState() {
@@ -100,11 +101,6 @@ class ParallaxColor extends StatefulWidget {
 }
 
 class ParallaxContainer extends StatelessWidget {
-  final Widget child;
-  final double position;
-  final double translationFactor;
-  final double opacityFactor;
-
   const ParallaxContainer({
     Key? key,
     required this.child,
@@ -112,6 +108,11 @@ class ParallaxContainer extends StatelessWidget {
     this.translationFactor = 100.0,
     this.opacityFactor = 1.0,
   }) : super(key: key);
+
+  final Widget child;
+  final double position;
+  final double translationFactor;
+  final double opacityFactor;
 
   @override
   Widget build(BuildContext context) {
@@ -126,9 +127,6 @@ class ParallaxContainer extends StatelessWidget {
 }
 
 class ParallaxImage extends StatelessWidget {
-  final Image image;
-  final double imageFactor;
-
   ParallaxImage.asset(
     String name, {
     Key? key,
@@ -143,6 +141,9 @@ class ParallaxImage extends StatelessWidget {
           ),
         ),
         super(key: key);
+
+  final Image image;
+  final double imageFactor;
 
   @override
   Widget build(BuildContext context) {
