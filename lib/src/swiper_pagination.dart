@@ -118,14 +118,12 @@ class RectSwiperPaginationBuilder extends SwiperPlugin {
     for (var i = 0; i < itemCount; ++i) {
       final active = i == activeIndex;
       final size = active ? activeSize : this.size;
-      list.add(SizedBox(
+      list.add(Container(
         width: size.width,
         height: size.height,
-        child: Container(
-          color: active ? activeColor : color,
-          key: Key('pagination_$i'),
-          margin: EdgeInsets.all(space),
-        ),
+        color: active ? activeColor : color,
+        key: Key('pagination_$i'),
+        margin: EdgeInsets.all(space),
       ));
     }
 
